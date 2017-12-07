@@ -3,4 +3,5 @@
 # Folders
 Debug
 Release
+.vs
 fish.vcxproj
