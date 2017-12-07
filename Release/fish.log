@@ -1,0 +1,23 @@
+﻿  main.cpp
+d:\visual studio 2017\p\fish\fish\header/mystring.h(150): warning C4002: “_free”宏的实参太多
+d:\visual studio 2017\p\fish\fish\init/setting.hpp(159): warning C4244: “初始化”: 从“my_ulonglong”转换到“unsigned int”，可能丢失数据
+d:\visual studio 2017\p\fish\fish\source/simple_json.hpp(133): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“char *”
+d:\visual studio 2017\p\fish\fish\source/simple_json.hpp(300): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+d:\visual studio 2017\p\fish\fish\source/user.hpp(263): warning C4838: 从“int”转换到“char”需要收缩转换
+d:\visual studio 2017\p\fish\fish\source/user.hpp(263): warning C4309: “初始化”: 截断常量值
+d:\visual studio 2017\p\fish\fish\source/fishs.hpp(245): warning C4477: “sprintf”: 格式字符串“%.2f”需要类型“double”的参数，但可变参数 11 拥有了类型“int”
+d:\visual studio 2017\p\fish\fish\source/room.hpp(52): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“Player *”
+d:\visual studio 2017\p\fish\fish\thread/thread.hpp(117): warning C4018: “<”: 有符号/无符号不匹配
+d:\visual studio 2017\p\fish\fish\source/entry.hpp(233): warning C4018: “<”: 有符号/无符号不匹配
+d:\visual studio 2017\p\fish\fish\source/entry.hpp(396): warning C4002: “_free”宏的实参太多
+d:\visual studio 2017\p\fish\fish\source/websocket.hpp(57): warning C4101: “msg”: 未引用的局部变量
+d:\visual studio 2017\p\fish\fish\source/websocket.hpp(88): warning C4101: “str”: 未引用的局部变量
+main.cpp(82): warning C4474: printf: 格式字符串中传递的参数太多
+  main.cpp(82): note: 占位符和其参数预计 0 可变参数，但提供的却是 1 参数
+  hiredis.lib(hiredis.obj) : 找到 MSIL .netmodule 或使用 /GL 编译的模块；正在使用 /LTCG 重新启动链接；将 /LTCG 添加到链接命令行以改进链接器性能
+  正在生成代码
+  已完成代码的生成
+hiredis.lib(hiredis.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“hiredis.lib(hiredis.obj)”或在“D:\Visual Studio 2017\P\fish\Release\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+hiredis.lib(sds.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“hiredis.lib(sds.obj)”或在“D:\Visual Studio 2017\P\fish\Release\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+hiredis.lib(net.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“hiredis.lib(net.obj)”或在“D:\Visual Studio 2017\P\fish\Release\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+  fish.vcxproj -> D:\Visual Studio 2017\P\fish\Release\fish.exe

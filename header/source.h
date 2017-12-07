@@ -1,0 +1,8 @@
+#include "source/simple_json.hpp"
+#include "source/user.hpp"
+#include "source/task.hpp"
+#include "source/fishs.hpp"
+#include "source/bullets.hpp"
+#include "source/player.hpp"
+#include "source/room.hpp"
+#include "source/websocket.hpp"
