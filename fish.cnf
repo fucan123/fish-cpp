@@ -11,7 +11,7 @@ redis_host  = 127.0.0.1 ;redis服务器地址
 redis_port  = 6379      ;redis密码
 
 ;[内存池配置]
-memory_size = 16M       ;内存池容量(纯数字表示字节, K表示KB, M表示MB)
+memory_size = 26M       ;内存池容量(纯数字表示字节, K表示KB, M表示MB)
 
 ;[游戏配置]
 max_room = 100;          ;最大房间数, 每个房间四个人, 那么最大玩家就是此房间数*4
