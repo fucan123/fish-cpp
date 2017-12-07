@@ -28,6 +28,8 @@ Mysql* Mysql::$class = 0;
 
 Mysql::Mysql(const char* host, const char* user, const char* pword, const char* dbase, int port) {
 	mysql_init(&_mysql);
+	char reconnect = 1;
+	mysql_options(&_mysql, MYSQL_OPT_RECONNECT, &reconnect);
 	mysql_real_connect(&_mysql, host, user, pword, dbase, port, NULL, 0);
 	_errno = mysql_errno(&_mysql);
 	_lock = 0;
@@ -110,8 +112,7 @@ char* Mysql::getOrItem(char* sql, int field_num) {
 MYSQL_ROW Mysql::getRow(char* sql) {
 	int error = mysql_real_query(&this->_mysql, sql, strlen(sql));
 	if (error) {
-		printf("Mysql::getRow error(%d, %s)!\n", error, mysql_error(&this->_mysql));
-		
+		printf("Mysql::getRow error(%d, %s, %s)!\n", error, mysql_error(&this->_mysql), sql);
 		return NULL;
 	}
 

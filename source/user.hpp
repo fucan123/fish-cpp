@@ -66,6 +66,7 @@ int User::init(char* sign_key) {
 	this->op_time = gettime();
 	this->privilege = { false, false, false };
 
+	mysql_ping(Mysql::$class->getConn());
 	/******用户基本信息↓******/
 	char sql_basic[256];
 	char sql_basic_f[] = "SELECT "\
@@ -242,6 +243,7 @@ void User::save() {
 		return;
 	}
 	MYSQL* mysql = Mysql::$class->getConn();
+	mysql_ping(mysql);
 	this->op_time = gettime();
 	/******更新用户信息↓******/
 	char sql[256];
