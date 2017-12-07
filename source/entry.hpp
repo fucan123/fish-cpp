@@ -259,20 +259,21 @@ void Entry::viewOnline() {
 void Entry::kickUser() {
 	int socket_id = _json->valueToInt("socket_id");
 	if (socket_id <= 0) {
-		this->sendmsg("{'op':'kick user', 'status':0, 'msg':'错误的连接标识！'}");
+		this->sendmsg("{'op':'kick user', 'status':0, 'msg':'error socket!'}");
 		return;
 	}
+	printf("%d=%d", socket_id, _player->socket);
 	if (socket_id  == _player->socket) {
-		this->sendmsg("{'op':'kick user', 'status':0, 'msg':'不能踢自己！'}");
+		printf("kick self\n");
+		this->sendmsg("{'op':'kick user', 'status':0, 'msg':'not kick self!'}");
 		return;
 	}
 	for (u_int i = 0; i < Players::max_len; i++) {
 		Player p = Players::players[i];
 		if (p.socket == socket_id) {
-			this->sendmsg("{'op':'kick user', 'status':-1, 'msg':'已找到，正在保存用户信息！'}");
 			rooms.leave(&p);
 			Players::remove(&p);
-			this->sendmsg("{'op':'kick user', 'status':1, 'msg':'已踢下线！'}");
+			this->sendmsg("{'op':'kick user', 'status':1, 'msg':'ok!'}");
 			break;
 		}
 	}
@@ -361,37 +362,12 @@ void Entry::sendmsgToRoom(char* msg) {
 }
 
 inline void Entry::sendmsg(char* msg, char fin, char opcode) {
-	char* _send_str_;
-	u_int send_len;
 	if (!msg) {
-		_send_str_ = emsg(fin, opcode, "null", &send_len);
+		msg = "null";
 	}
-	else {
-		int len = strlen(msg);
-		if (1 || len < 126) {
-			_send_str_ = emsg(fin, opcode, msg, &send_len);
-		}
-		else {
-			/*printf("分片.\n");
-			char* msg_ptr = msg;
-			int xxx = 20;
-			_send_str_ = emsg(0, 1, msg_ptr, xxx);
-			send(_player->socket, _send_str_, strlen(_send_str_), 0);
-			_free(_send_str_);
-			len -= xxx;
-			while (1 && len > 0) {
-				Sleep(100);
-				msg_ptr += xxx;
-				char fin = len <= xxx ? 1 : 0;
-				printf("fin: %d, f len: %d.\n", fin, len > xxx ? xxx : len);
-				_send_str_ = emsg(fin, 0, msg_ptr, len > xxx ? xxx : len);
-				send(_player->socket, _send_str_, strlen(_send_str_), 0);
-				_free(_send_str_);
-				len -= xxx;
-			}*/
-		}
-	}
-	
+	//printf("send msg: %s\n", msg);
+	u_int send_len;
+	char* _send_str_ = emsg(fin, opcode, msg, &send_len);
 	send(_player->socket, _send_str_, send_len, 0);
 	_free(_send_str_, "send str");
 	//printf("释放发送字符完成\n");

@@ -27,7 +27,7 @@
 int main() {
 	Cnf* cnf = new Cnf;
 	if (!cnf->parse("fish.cnf")) {
-		system("pause" );
+		system("pause");
 		return 0;
 	}
 	if (!cnf->check()) {
@@ -83,7 +83,6 @@ int main() {
 		system("pause");
 		return 0;
 	}
-
 	//printf("size: %d.\n", sizeof(Bullet));
 	/*S_Setting_Fish* fishs = Setting::$class->getFish();
 	for (int i = 0; i < Setting::$class->getFishQty(); i++) {

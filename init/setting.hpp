@@ -127,13 +127,13 @@ void Setting::loadSystem() {
 					S_Setting_System* setting = new S_Setting_System;
 					setting->key = new char[len0 + 1];
 					setting->value = NULL;
+					setting->next = NULL;
 					
 					memcpy(setting->key, row[0], len0 + 1);
 					if (len1 > 0) {
 						setting->value = new char[len1 + 1];
 						memcpy(setting->value, row[1], len1 + 1);
 					}
-
 					*tmp_setting = setting; //Ìí¼Óµ½Á´±í
 					tmp_setting = &((*tmp_setting)->next);
 				}

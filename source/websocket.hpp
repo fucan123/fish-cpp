@@ -30,14 +30,14 @@ WebSocket::WebSocket(u_long host, u_short port) {
 	local.sin_family = AF_INET;
 	local.sin_port = htons(port);
 	bind(sListen, (struct sockaddr *)&local, sizeof(SOCKADDR_IN));
-
+	
 	listen(sListen, 3);
 	//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)the_main_test, NULL, 0, &dwThreadId);
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)WebSocket::run, this, 0, &dwThreadId);
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::bullet, NULL, 0, &dwThreadId);
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::fish, NULL, 0, &dwThreadId);
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)WebSocket::run, this, 0, &dwThreadId); 
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::bullet, NULL, 0, &dwThreadId); 
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::fish, NULL, 0, &dwThreadId); 
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::saveUser, NULL, 0, &dwThreadId);
-
+	
 	while (true) {
 		sClient = accept(sListen, (struct sockaddr *)&client, &iaddrSize);
 		
@@ -146,7 +146,7 @@ void WebSocket::onconnect(SOCKET socket, SOCKADDR_IN* client) {
 end:
 	char value[128];
 	sprintf(value, "{'start_time':%d,'end_time':%d,'count':%d}", start_time, now_time, count);
-	printf("%s\n", value);
+	//printf("%s\n", value);
 	Redis::$class->set(key, value);
 }
 

@@ -261,8 +261,8 @@ void User::save() {
 		//更新余额
 		sprintf(sql, "UPDATE user_coin SET balance=%d WHERE user_id=%d", balance + win_coin, this->id);
 		mysql_query(mysql, sql);
-		//更新余额变动日记
-		char remark[] = {0xe6, 0xb8, 0xb8, 0xe6, 0x88, 0x8f, 0xe5, 0x86, 0x85, 0xe5, 0x8f, 0x98, 0xe5, 0x8A, 0xA8, 0}; //字符'游戏内变动'的utf8编码
+		//更新余额变动日记 0xe5, 0x86, 0x85,->内
+		char remark[] = {0xe6, 0xb8, 0xb8, 0xe6, 0x88, 0x8f, 0xe5, 0x8f, 0x98, 0xe5, 0x8A, 0xA8, 0}; //字符'游戏变动'的utf8编码
 		sprintf(sql, "INSERT INTO user_coin_logs(user_id,op_user_id,count,balance,`remark`,type,created_at) VALUES (%d,%d,%d,%d,'%s','%s',%d)",
 			this->id, this->id, win_coin, balance + win_coin, remark, "game", this->op_time);
 		printf("sql:%s(%d)\n", sql, strlen(sql));
