@@ -77,7 +77,7 @@ int User::init(char* sign_key) {
 	if (basic && strlen(basic[0]) > 0) {
 		this->id = atoi(basic[0]);
 		this->group_id = atoi(basic[1]);
-		int index = strlen(basic[3]) > 0 ? 3 : 2;
+		int index = strlen(basic[3]) > 0 ?  3 : 2;
 		int len = strlen(basic[index]);
 		if (len > 0) {
 			this->name = (char*)_malloc(len + 1);
