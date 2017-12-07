@@ -4,5 +4,6 @@
 Debug
 Release
 .vs
-fish.vcxproj
-fish.cnf
+*.vcxproj
+*.cnf
+*.conf
