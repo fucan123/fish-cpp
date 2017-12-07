@@ -1,7 +1,7 @@
 ;[mysql配置]
 mysql_host  = 127.0.0.1 ;mysql服务器地址
 mysql_user  = root      ;mysql用户名
-mysql_pword =           ;mysql密码, 没有留空
+mysql_pword = 123456    ;mysql密码, 没有留空
 mysql_port  = 3306      ;mysql端口
 mysql_dbase = fish      ;mysql要使用的数据库
 mysql_char  = utf8      ;mysql字符集

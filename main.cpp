@@ -27,7 +27,7 @@
 int main() {
 	Cnf* cnf = new Cnf;
 	if (!cnf->parse("fish.cnf")) {
-		system("pause");
+		system("pause" );
 		return 0;
 	}
 	if (!cnf->check()) {
