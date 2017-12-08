@@ -40,7 +40,8 @@ public:
 	S_UserPrivilege privilege; //权限
 public:
 	inline S_UserTask* getTask();
-	int  init(char* sign_key);
+	int  checkSignKey(char* sign_key); //检查登录key是否有效, 返回用户ID
+	int  load(); //加载用户信息，需先调用checkSignKey
 	int  getDbCoin(); //获取数据表中的金币余额
 	void killFish(int no); //击杀了一条编号为no的鱼
 	bool checkKillFish(int no, int need_num);
@@ -55,7 +56,15 @@ S_UserTask* User::getTask() {
 	return this->task;
 }
 
-int User::init(char* sign_key) {
+int User::checkSignKey(char* sign_key) {
+	mysql_ping(Mysql::$class->getConn());
+	char sql[256];
+	sprintf(sql, "SELECT u.id FROM user_sign AS us INNER JOIN users AS u ON u.id=us.user_id WHERE us.sign_key='%s'", sign_key);
+	this->id = Mysql::$class->getItemToInt(sql, 0);
+	return this->id;
+}
+
+int User::load() {
 	this->killfish_total = 0;
 	this->task_total = 0;
 	this->coin = 0;
@@ -66,19 +75,18 @@ int User::init(char* sign_key) {
 	this->op_time = gettime();
 	this->privilege = { false, false, false };
 
-	mysql_ping(Mysql::$class->getConn());
+	char uid_str[12];
+	sprintf(uid_str, "%d", this->id);
 	/******用户基本信息↓******/
-	char sql_basic[256];
-	char sql_basic_f[] = "SELECT "\
+	char sql_basic[256] = "SELECT "\
 		"u.id,u.group_id,u.name,u.nick,u.level_exp,u.vip_exp"\
-		" FROM user_sign AS us INNER JOIN users AS u ON u.id=us.user_id WHERE us.sign_key='%s'";
-	sprintf(sql_basic, sql_basic_f, sign_key);
+		" FROM users AS u WHERE id=";
+	strcat(sql_basic, uid_str);
 	MYSQL_ROW basic = Mysql::$class->getRow(sql_basic);
 	//printf("%s(%d), %p\n", sql_basic, strlen(sql_basic), basic);
 	if (basic && strlen(basic[0]) > 0) {
-		this->id = atoi(basic[0]);
 		this->group_id = atoi(basic[1]);
-		int index = strlen(basic[3]) > 0 ? 3 : 2;
+		int index = strlen(basic[3]) > 0 ? 3 : 2; //有昵称读取昵称
 		int len = strlen(basic[index]);
 		if (len > 0) {
 			this->name = (char*)_malloc(len + 1);
@@ -108,8 +116,6 @@ int User::init(char* sign_key) {
 		return 0;
 	}
 	/******用户基本信息↑******/
-	char uid_str[12];
-	sprintf(uid_str, "%d", this->id);
 	/******用户已存在的任务↓******/
 	char sql_task[200] = "SELECT a.id,a.task_id,a.status,b.group_id,b.mutex_id FROM user_tasks AS a WHERE INNER JOIN tasks b ON b.id=a.task_id a.user_id=";
 	strcat(sql_task, uid_str);
@@ -151,10 +157,10 @@ int User::init(char* sign_key) {
 					continue;
 				}
 				S_UserKillFish* killfish_x = (S_UserKillFish*)_malloc(sizeof(S_UserKillFish));
-				killfish_x->id = atoi(row_killfish[0]);
-				killfish_x->no = no;      //鱼编号
-				killfish_x->value = atoi(row_killfish[2]);   //击杀数量
-				killfish_x->is_change = 0;
+				killfish_x->id = atoi(row_killfish[0]);     //记录ID
+				killfish_x->no = no;                        //鱼编号
+				killfish_x->value = atoi(row_killfish[2]);  //击杀数量
+				killfish_x->is_change = 0;                  //是否变动
 				killfish_x->next = NULL;
 
 				*tmp_killfish = killfish_x; //添加到链表

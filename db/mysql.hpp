@@ -16,7 +16,7 @@ public:
 	inline void freeLock();
 	int   setChar(char* ch);
 	char* getItem(char* sql);
-	int   getItemToInt(char* sql);
+	int   getItemToInt(char* sql, int default_value =0);
 	char* getOrItem(char* sql, int num=2);
 	MYSQL_ROW getRow(char* sql);
 	inline MYSQL* mysql();
@@ -74,7 +74,7 @@ char* Mysql::getItem(char* sql) {
 	return value;
 }
 
-int Mysql::getItemToInt(char* sql) {
+int Mysql::getItemToInt(char* sql, int default_value) {
 	char* value = this->getItem(sql);
 	if (value) {
 		int num = atoi(value);
@@ -82,7 +82,7 @@ int Mysql::getItemToInt(char* sql) {
 		return num;
 	}
 	else {
-		return 0;
+		return default_value;
 	}
 }
 

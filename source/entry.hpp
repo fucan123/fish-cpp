@@ -20,6 +20,7 @@ public:
 	void exit();
 	void other();
 	void sendmsgToRoom(char* msg);
+	void senderror(error_msg_code); //发送错误信息
 	inline void sendmsg(char* msg, char fin=1, char opcode=1);
 };
 
@@ -30,6 +31,7 @@ Entry::Entry(Player* player, Json* json) {
 
 	char* op = json->value("op");
 	if (!op) {
+		this->senderror(ERROR_MSG_OP);
 		return;
 	}
 	if (0) {
@@ -61,12 +63,14 @@ Entry::Entry(Player* player, Json* json) {
 	} else
 	if (strcmp(op, "view online") == 0) { //查看在线玩家
 		if (!_user->privilege.view) { 
+			this->senderror(ERROR_MSG_PRILIVEGE);
 			return;
 		}
 		this->viewOnline();
 	} else 
 	if (strcmp(op, "kick user") == 0) { //踢玩家下线
 		if (!_user->privilege.kick) {
+			this->senderror(ERROR_MSG_PRILIVEGE);
 			return;
 		}
 		this->kickUser();
@@ -74,12 +78,14 @@ Entry::Entry(Player* player, Json* json) {
 	if (strcmp(op, "server info") == 0) { //服务器信息
 		//printf("server info.\n");
 		if (!_user->privilege.exit) {
+			this->senderror(ERROR_MSG_PRILIVEGE);
 			return;
 		}
 		this->serverInfo();
 	} else
 	if (strcmp(op, "set setting") == 0) { //服务器信息
 		if (!_user->privilege.exit) {
+			this->senderror(ERROR_MSG_PRILIVEGE);
 			return;
 		}
 		this->setSetting();
@@ -87,6 +93,7 @@ Entry::Entry(Player* player, Json* json) {
 	if (strcmp(op, "exit") == 0) { //终止本程序
 		//printf("p-exit.\n");
 		if (!_user->privilege.exit) {
+			this->senderror(ERROR_MSG_PRILIVEGE);
 			return;
 		}
 		this->exit();
@@ -97,11 +104,13 @@ Entry::Entry(Player* player, Json* json) {
 }
 
 void Entry::verifyAccount() {
+	//验证帐号确认信息[status为1验证成功, status为0验证失败, status为-1帐号保存中, status为-2帐号登录当中]
 	char* key = _json->value("key");
 	if (!key) {
 		this->sendmsg("{'op':'verify account', 'uid':0, 'status':0}");
 	}
 	else {
+		_player->kick = _json->valueToInt("kick");
 		_player->tmp = key;
 		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::verifyAccount, (LPVOID)_player, 0, NULL);
 	}
@@ -262,9 +271,7 @@ void Entry::kickUser() {
 		this->sendmsg("{'op':'kick user', 'status':0, 'msg':'error socket!'}");
 		return;
 	}
-	printf("%d=%d", socket_id, _player->socket);
 	if (socket_id  == _player->socket) {
-		printf("kick self\n");
 		this->sendmsg("{'op':'kick user', 'status':0, 'msg':'not kick self!'}");
 		return;
 	}
@@ -371,4 +378,10 @@ inline void Entry::sendmsg(char* msg, char fin, char opcode) {
 	send(_player->socket, _send_str_, send_len, 0);
 	_free(_send_str_, "send str");
 	//printf("释放发送字符完成\n");
+}
+
+void Entry::senderror(error_msg_code code) {
+	char msg[64];
+	sprintf(msg, "{'op':'error', 'code':%d}", code);
+	this->sendmsg(msg);
 }

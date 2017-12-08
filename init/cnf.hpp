@@ -17,7 +17,7 @@ public:
 	bool parse(char* file) {
 		FILE* f = fopen(file, "r");
 		if (!f) {
-			printf("!file.\n");
+			printf("此程序目录下不存在文件%s.\n", file);
 			return false;
 		}
 

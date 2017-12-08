@@ -12,6 +12,11 @@ typedef unsigned long long   u_int64;
 #define MAX_INT   2147483647
 #define MAX_UINT  4294967295
 
+enum error_msg_code {
+	ERROR_MSG_OP = 1,     //指令错误
+	ERROR_MSG_PRILIVEGE,  //没有权限
+};
+
 typedef struct string_sign {
 	char* start;
 	char* end;
@@ -28,11 +33,13 @@ typedef struct struct_player {
 	int    in_time;   //进入时间
 	int    game_time; //游戏开始时间
 	int    op_time;   //最后一次操作时间
+	int    kick;      //是否强制登录(踢当前帐号下线)
 	void*  tmp;       //临时
 	void*  user;      //User类
 	int    closeing;  //关闭中
 	int    save_uid;  //正在保存的用户ID(保存中此用户不允许连接)
 } Player;
+
 
 #ifdef _WINDOWS
 double get_cpu_rate() {

@@ -134,13 +134,13 @@ void Thread::verifyAccount(LPVOID player) {
 	while (*key) {
 		if (*key == '"' || *key == '\'') {
 			sendmsg("{'op':'verify account', 'uid':0, 'status':0}", p);
-			break;
+			return;
 		}
 		key++;
 	}
 
 	User* user = (User*)_malloc(sizeof(User));
-	int uid = user->init((char*)p->tmp);
+	int uid = user->checkSignKey((char*)p->tmp);
 	if (uid > 0) {
 		for (int i = 0; i < 1024; i++) {
 			if (Players::players[i].save_uid == uid) { //当前登录用户正在保存, 暂不允许登录
@@ -152,15 +152,23 @@ void Thread::verifyAccount(LPVOID player) {
 		}
 		for (int i = 0; i < 1024; i++) {
 			if (Players::players[i].uid == uid) {
-				printf("玩家被踢下线(%d, #%d).\n", uid, Players::players[i].socket);
-				rooms.leave(&Players::players[i]);
-
-				sendmsg("{'op':'offline', 'status':1}", &Players::players[i]);
-				Players::remove(&Players::players[i]);
+				if (Players::players[i].kick) { //如果选择踢下线
+					printf("玩家被踢下线(%d, #%d).\n", uid, Players::players[i].socket);
+					sendmsg("{'op':'offline', 'status':1}", &Players::players[i]);
+					rooms.leave(&Players::players[i]);
+					Players::remove(&Players::players[i]);
+				}
+				else {
+					//发送需要用户确认强制登录的信息 status=-1
+					sendmsg("{'op':'verify account', 'status':-2}", p);
+					_free(user);
+					return;
+				}
 				break;
 			}
 		}
 		printf("验证账户成功, ID:%d\n", uid);
+		user->load(); //加载用户信息
 		p->uid = uid;
 		p->user = user;
 
@@ -170,7 +178,6 @@ void Thread::verifyAccount(LPVOID player) {
 	}
 	else {
 		printf("验证失败!\n");
-		user->destory();
 		_free(user);
 		sendmsg("{'op':'verify account', 'uid':0, 'status':0}", p);
 	}
