@@ -8,3 +8,4 @@ Release
 *.cnf
 *.conf
 *.sln
+*.vcxproj.filters
