@@ -83,10 +83,13 @@
     <ClInclude Include="win32fixes.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="thread\thread.hpp">
+    <ClInclude Include="header\source.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="header\source.h">
+    <ClInclude Include="thread\thread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\thread.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

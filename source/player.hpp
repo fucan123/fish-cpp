@@ -69,9 +69,7 @@ bool Players::remove(Player* p) {
 	if (p->user) {
 		printf("user ptr:%p, socket:%d\n", p->user, p->socket);
 		p->save_uid = p->uid;
-		((User*)p->user)->save();
-		((User*)p->user)->destory();
-		_free(p->user);
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::userLeave, (LPVOID)p->user, 0, NULL);
 	}
 	memset(p, 0, sizeof(Player));
 	Players::len--;

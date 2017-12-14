@@ -1,3 +1,4 @@
+#include "thread/thread.h"
 #include "source/simple_json.hpp"
 #include "source/user.hpp"
 #include "source/task.hpp"
@@ -5,4 +6,5 @@
 #include "source/bullets.hpp"
 #include "source/player.hpp"
 #include "source/room.hpp"
+#include "thread/thread.hpp"
 #include "source/websocket.hpp"

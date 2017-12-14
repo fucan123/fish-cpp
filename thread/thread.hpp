@@ -1,10 +1,4 @@
-class Thread {
-public:
-	static void bullet();                     //子弹处理
-	static void fish();                       //鱼处理
-	static void saveUser();                   //保存用户信息
-	static void verifyAccount(LPVOID player); //验证帐号
-};
+#include "thread.h"
 
 void Thread::bullet() {
 	int max_room = rooms.getMaxRoom();
@@ -107,7 +101,7 @@ void Thread::fish() {
 	}
 }
 
-void Thread::saveUser() {
+void Thread::userSave() {
 	int timeval = Setting::$class->systemToInt("game_user_save_timeval");
 	if (timeval < 5) {
 		timeval = 300;
@@ -126,6 +120,13 @@ void Thread::saveUser() {
 		}
 		Sleep(10000);
 	}
+}
+
+void Thread::userLeave(LPVOID user) {
+	((User*)user)->save();
+	((User*)user)->destory();
+	printf("p:%p, p user: %p\n", user);
+	_free(user);
 }
 
 void Thread::verifyAccount(LPVOID player) {

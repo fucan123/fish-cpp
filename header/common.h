@@ -36,8 +36,8 @@ typedef struct struct_player {
 	int    kick;      //是否强制登录(踢当前帐号下线)
 	void*  tmp;       //临时
 	void*  user;      //User类
-	int    closeing;  //关闭中
 	int    save_uid;  //正在保存的用户ID(保存中此用户不允许连接)
+	int    closeing;  //关闭中
 } Player;
 
 

@@ -1,4 +1,4 @@
-#include "thread/thread.hpp"
+
 #include "source/entry.hpp"
 
 class WebSocket {
@@ -36,7 +36,7 @@ WebSocket::WebSocket(u_long host, u_short port) {
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)WebSocket::run, this, 0, &dwThreadId); 
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::bullet, NULL, 0, &dwThreadId); 
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::fish, NULL, 0, &dwThreadId); 
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::saveUser, NULL, 0, &dwThreadId);
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread::userSave, NULL, 0, &dwThreadId);
 	
 	while (true) {
 		sClient = accept(sListen, (struct sockaddr *)&client, &iaddrSize);
