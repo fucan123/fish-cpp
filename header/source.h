@@ -1,4 +1,5 @@
 #include "thread/thread.h"
+#include "source/link.hpp"
 #include "source/simple_json.hpp"
 #include "source/user.hpp"
 #include "source/task.hpp"

@@ -1,10 +1,10 @@
-class Cnf {
+class Conf {
 private:
 	int _len;
 	char** _key;
 	char** _value;
 public:
-	Cnf() {
+	Conf() {
 		_len = 0;
 		_key = new char* [50];
 		_value = new char*[50];

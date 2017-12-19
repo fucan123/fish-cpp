@@ -23,24 +23,25 @@
 #pragma comment(lib, "hiredis.lib")
 #pragma comment(lib, "libmysql.lib")
 
+Conf* g_conf;
 
 int main() {
-	Cnf* cnf = new Cnf;
-	if (!cnf->parse("fish.conf")) {
+	g_conf = new Conf;
+	if (!g_conf->parse("fish.conf")) {
 		system("pause");
 		return 0;
 	}
-	if (!cnf->check()) {
+	if (!g_conf->check()) {
 		system("pause");
 		return 0;
 	}
-	int max_room = cnf->get_int("max_room");
+	int max_room = g_conf->get_int("max_room");
 	if (max_room <= 0) {
 		max_room = 100;
 	}
 	rooms.setRooms(max_room);
 
-	int memory_size = cnf->get_memory_size();
+	int memory_size = g_conf->get_memory_size();
 	//printf("m size: %d\n", memory_size);
 	if (!memory_init(memory_size)) {
 		printf("内存申请失败(%.2fKB)", (double)memory_size/1024.00);
@@ -55,26 +56,26 @@ int main() {
 	WSADATA wsaData;
 	WSAStartup(0x0202, &wsaData);
 
-	Redis::$class = new Redis(cnf->get("redis_host"), cnf->get_int("redis_port"));
+	Redis::$class = new Redis(g_conf->get("redis_host"), g_conf->get_int("redis_port"));
 	if (!Redis::_this()->redis()) {
-		printf("连接Redis失败(地址: %s, 端口: %d).\n", cnf->get("redis_host"), cnf->get_int("redis_port"));
+		printf("连接Redis失败(地址: %s, 端口: %d).\n", g_conf->get("redis_host"), g_conf->get_int("redis_port"));
 		system("pause");
 		return 0;
 	}
 	if (Redis::_this()->redis()->err) {
-		printf("连接Redis失败(地址: %s, 端口: %d); 错误信息: %s.\n", cnf->get("redis_host"), cnf->get_int("redis_port"), Redis::_this()->redis()->errstr);
+		printf("连接Redis失败(地址: %s, 端口: %d); 错误信息: %s.\n", g_conf->get("redis_host"), g_conf->get_int("redis_port"), Redis::_this()->redis()->errstr);
 		system("pause");
 		return 0;
 	}
 	Redis::$class->set("x", "xx");
 
-	Mysql::$class = new Mysql(cnf->get("mysql_host"), cnf->get("mysql_user"), cnf->get("mysql_pword"), cnf->get("mysql_dbase"), cnf->get_int("mysql_port"));
+	Mysql::$class = new Mysql(g_conf->get("mysql_host"), g_conf->get("mysql_user"), g_conf->get("mysql_pword"), g_conf->get("mysql_dbase"), g_conf->get_int("mysql_port"));
 	if (Mysql::$class->error()) {
 		printf("连接Mysql失败; 错误码: %d.\n", Mysql::$class->error());
 		system("pause");
 		return 0;
 	}
-	Mysql::$class->setChar(cnf->get("mysql_char"));
+	Mysql::$class->setChar(g_conf->get("mysql_char"));
 
 	Setting::$class = new Setting;
 	//printf("fish qty: %d.\n", Setting::$class->getFishQty());
@@ -150,8 +151,6 @@ int main() {
 	//json.add("op", "new fish");
 	//json.push("id", 1);
 	//json.push("f", 1);
-	cnf->destroy();
-	delete cnf;
 
 	char test[] = "ABCD";
 	*(test + 1) = 0; *(test + 2) = 0; *(test + 3) = 0;
@@ -165,6 +164,8 @@ int main() {
 	delete Mysql::$class;
 	delete Setting::$class;
 	memory_destroy();
+	g_conf->destroy();
+	delete g_conf;
 	system("pause");
 	return 0; 
 }
