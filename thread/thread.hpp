@@ -173,8 +173,8 @@ void Thread::verifyAccount(LPVOID player) {
 		p->uid = uid;
 		p->user = user;
 
-		char send_str[100];
-		sprintf(send_str, "{'op':'verify account', 'status':1, 'uid':%d, 'coin':%d, 'name':'%s'}", user->id, user->coin, user->name);
+		char send_str[128];
+		sprintf(send_str, "{'op':'verify account', 'status':1, 'uid':%d, 'coin':%d, 'name':'%s', 'time':%.3f}", user->id, user->coin, user->name, getmtime());
 		sendmsg(send_str, p);
 	}
 	else {

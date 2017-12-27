@@ -84,7 +84,7 @@ Fish* Fishs::create() {
 	int rand = rand();
 	Fish* p = (Fish*)_malloc(sizeof(Fish));
 	p->id = getID();
-
+	p->factor = my_random(1, 100);
 	//默认生成从左到右
 	p->point_start.x = 0 - my_random(200, 500);
 	p->point_end.x = my_random(1200, 1500);
@@ -105,14 +105,14 @@ Fish* Fishs::create() {
 
 	p->angle = my_random(0, 360);
 	p->fish = Setting::$class->getFish(my_random(0, Setting::$class->getFishQty() - 1));
-	p->type = my_random(0, 11);
+	p->type = my_random(0, 10);
 	p->create_time = getmtime();
 	p->lock = 0;
 	p->isdel = 0;
 	if (p->fish == NULL) {
 		_free(p);
-		this->_lock = 0;
-		return NULL;
+		p = NULL;
+		goto end;
 	}
 	//printf("id: %d\n", p->id);
 	if (_head == NULL) {
@@ -128,8 +128,8 @@ Fish* Fishs::create() {
 		_curr = p;
 	}
 	_len++;
+end:
 	this->_lock = 0;
-
 	return p;
 }
 
@@ -242,9 +242,9 @@ void Fishs::clear() {
 
 char* Fishs::fishJson(Fish* p) {
 	char* str = (char*)_malloc(300);
-	sprintf(str, "{op:'new fish', id:%d, type:%d, cp:[{x:%d, y:%d},{x:%d, y:%d},{x:%d, y:%d},{x:%d, y:%d}], t:%.2f}",
-	    p->id, p->type, p->point_start.x, p->point_start.y, p->point_ctr1.x, p->point_ctr1.y,
-		p->point_ctr2.x, p->point_ctr2.y, p->point_end.x, p->point_end.y, 0);
+	sprintf(str, "{op:'new fish', id:%d, factor:%d, type:%d, cp:[{x:%d, y:%d},{x:%d, y:%d},{x:%d, y:%d},{x:%d, y:%d}], create:%.3f}",
+	    p->id, p->factor, p->type, p->point_start.x, p->point_start.y, p->point_ctr1.x, p->point_ctr1.y,
+		p->point_ctr2.x, p->point_ctr2.y, p->point_end.x, p->point_end.y, p->create_time);
 	return str;
 }
 #endif // !FISHS_HPP
