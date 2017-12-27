@@ -4,6 +4,8 @@
 class WebSocket {
 public:
 	Player* player;
+private:
+	u_long ip;
 public:
 	WebSocket(u_long host, u_short port);
 	static void run(LPVOID websocket); //ÔËÐÐ
@@ -124,6 +126,7 @@ void WebSocket::run(LPVOID websocket) {
 }
 
 void WebSocket::onconnect(SOCKET socket, SOCKADDR_IN* client) {
+	this->ip = client->sin_addr.S_un.S_addr;
 	int now_time = gettime(), count = 1;
 	int start_time = now_time;
 	u_long ip = client->sin_addr.S_un.S_addr;
@@ -142,7 +145,7 @@ void WebSocket::onconnect(SOCKET socket, SOCKADDR_IN* client) {
 			goto end;
 		}
 	}
-	Players::add(socket);
+	Players::add(socket, ip);
 end:
 	char value[128];
 	sprintf(value, "{'start_time':%d,'end_time':%d,'count':%d}", start_time, now_time, count);
@@ -180,6 +183,7 @@ void WebSocket::onclose() {
 }
 
 void WebSocket::hack(char* header) {
+	printf("header:%s", header);
 	char* key = strstr(header, "Sec-WebSocket-Key:");
 	//printf("p:%p\n", key);
 	if (key) {

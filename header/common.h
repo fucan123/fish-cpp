@@ -25,6 +25,7 @@ typedef struct string_sign {
 typedef struct struct_player {
 	SOCKET socket;    //socket
 	int    index;     //在数组中的索引
+	u_long ip;        //IP
 	int    uid;       //用户ID
 	int    coin;      //金币
 	int    room;      //房间号

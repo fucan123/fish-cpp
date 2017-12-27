@@ -7,7 +7,7 @@ public:
 	Players();
 	static void init();
 	static int find(SOCKET); //根据socket查找玩家, 返回players索引, -1不存在
-	static bool add(SOCKET); //添加玩家
+	static bool add(SOCKET, u_long ip); //添加玩家
 	static bool remove(Player*); //移除玩家 
 };
 
@@ -30,7 +30,7 @@ int Players::find(SOCKET sk) {
 	return -1;
 }
 
-bool Players::add(SOCKET sk) {
+bool Players::add(SOCKET sk, u_long ip) {
 	if (Players::len == 1024) {
 		return false;
 	}
@@ -53,6 +53,7 @@ bool Players::add(SOCKET sk) {
 	Player* p = &Players::players[index];
 	p->index = index;
 	p->socket = sk;
+	p->ip = ip;
 	p->in_time = gettime();
 
 	Players::len++;
