@@ -170,3 +170,27 @@ int strpos(char* text, char* need, u_int start = 0, u_int end=0) { //查找字符串n
 	}
 	return find ? ptr - text : -1;
 }
+
+/*
+* 把整型数字转成utf8字符串
+* dest 字符串保存地址
+* num 数字[数组]
+* len 数组长度
+*/
+char* int2utf8(char* dest, int* num, int len) {
+	int index = 0;
+	for (int i = 0; i < len; i++) {
+		if (num[i] < 128) {
+			dest[index] = num[i] & 0xff;
+			index++;
+		}
+		else {
+			dest[index] = (num[i] >> 16) & 0xff;
+			dest[index + 1] = (num[i] >> 8) & 0xff;
+			dest[index + 2] = (num[i]) & 0xff;
+			index += 3;
+		}
+	}
+	dest[index] = 0;
+	return dest;
+}

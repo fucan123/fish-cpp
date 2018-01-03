@@ -183,7 +183,7 @@ void WebSocket::onclose() {
 }
 
 void WebSocket::hack(char* header) {
-	printf("header:%s", header);
+	//printf("header:%s", header);
 	char* key = strstr(header, "Sec-WebSocket-Key:");
 	//printf("p:%p\n", key);
 	if (key) {

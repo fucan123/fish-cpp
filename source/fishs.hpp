@@ -105,7 +105,7 @@ Fish* Fishs::create() {
 
 	p->angle = my_random(0, 360);
 	p->fish = Setting::$class->getFish(my_random(0, Setting::$class->getFishQty() - 1));
-	p->type = my_random(0, 10);
+	p->type = my_random(0, 22);
 	p->create_time = getmtime();
 	p->lock = 0;
 	p->isdel = 0;

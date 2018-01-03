@@ -381,7 +381,15 @@ inline void Entry::sendmsg(char* msg, char fin, char opcode) {
 }
 
 void Entry::senderror(error_msg_code code) {
-	char msg[64];
-	sprintf(msg, "{'op':'error', 'code':%d}", code);
-	this->sendmsg(msg);
+	char send_str[64], msg[32] = {0};
+	if (code == ERROR_MSG_OP) {
+		int _msg[] = { 0xE68C87, 0xE4BBA4, 0xE99499, 0xE8AFAF, 0xEFBC81 }; //指令错误！utf8十六进制
+		int2utf8(msg, _msg, 5);
+	}
+	else if(code == ERROR_MSG_PRILIVEGE) {
+		int _msg[] = { 0xE69D83, 0xE99990, 0xE4B88D, 0xE5A49F, 0xEFBC81 }; //权限不够！utf8十六进制
+		int2utf8(msg, _msg, 5);
+	}
+	sprintf(send_str, "{'op':'error', 'code':%d, 'msg':'%s'}", code, msg);
+	this->sendmsg(send_str);
 }
