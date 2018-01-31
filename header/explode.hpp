@@ -1,7 +1,6 @@
 class Explode {
 private:
 	char** _array;
-	char*  _dst;
 	char*  _ptrs[10][2];
 	unsigned int _len;
 	void copy();
@@ -20,7 +19,6 @@ Explode::Explode(char  delimiter, char* str) {
 	this->_array = NULL;
 	this->_len = 0;
 	if (str != NULL && *str) {
-		this->_dst = str;
 		memset(this->_ptrs, 0, sizeof(char*) * 20);
 		char* start = str;
 		int i = 0;
