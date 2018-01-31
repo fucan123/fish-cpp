@@ -10,6 +10,7 @@
 #include "header/common.h"
 #include "init/cnf.hpp"
 #include "init/memory.hpp"
+#include "header/explode.hpp"
 #include "header/mystring.h"
 #include "db/redis.hpp"
 #include "db/mysql.hpp"
@@ -24,6 +25,10 @@
 #pragma comment(lib, "libmysql.lib")
 
 Conf* g_conf;
+
+int ttt(int x, int y) {
+	return x / y;
+}
 
 int main() {
 	g_conf = new Conf;
@@ -52,6 +57,9 @@ int main() {
 	for (int i = 0; i < 100; i++) {
 		//printf("r:%d", random(100, 120));
 	}
+
+	Explode array("||", "1||23||4||||2.,|||||");
+	printf("//:%s\n", array[2]);
 
 	WSADATA wsaData;
 	WSAStartup(0x0202, &wsaData);
