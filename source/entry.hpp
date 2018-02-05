@@ -206,6 +206,7 @@ void Entry::hitFish() {
 		//printf("命中鱼\n");
 		Fish* fish = room->fishs->getFish(_json->valueToInt("fish_id"));
 		if (fish) {
+			fish->hit_coin += 1; //命中此鱼花费金币累计
 			//printf("命中鱼鱼\n");
 			_user->coin += fish->fish->coin;
 			_user->killFish(fish->fish->no);

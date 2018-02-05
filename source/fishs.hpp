@@ -29,9 +29,10 @@ typedef struct struct_fish {
 	fish_type       type; //类型
 	struct_fish*    prev; //上一个节点
 	struct_fish*    next; //下一个节点
+	int    hit_coin;      //所有玩家命中此鱼已花费的金币数量
+	int    lock;          //是否锁定
+	int    isdel;         //是否已删除
 	double create_time;   //创建时间
-	int lock;             //是否锁定
-	int isdel;            //是否已删除
 } Fish;
 
 class Fishs {
@@ -106,9 +107,11 @@ Fish* Fishs::create() {
 	p->angle = my_random(0, 360);
 	p->fish = Setting::$class->getFish(my_random(0, Setting::$class->getFishQty() - 1));
 	p->type = my_random(0, 22);
-	p->create_time = getmtime();
+	p->hit_coin = 0;
 	p->lock = 0;
 	p->isdel = 0;
+	p->create_time = getmtime();
+
 	if (p->fish == NULL) {
 		_free(p);
 		p = NULL;
